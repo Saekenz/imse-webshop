@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: flask
+    build: .
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
+      - mongodb
+
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: webshop_mysql_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    expose:
+      - 3306
+
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: webshop_mongo_db
+    expose:
+      - 27017
+
+volumes:
+  my-datavolume:

@@ -1,0 +1,69 @@
+{% extends "_layout.html" %}
+{% block content %}
+    <style>
+
+        nav {
+            background-color: #007bff;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 20px;
+        }
+
+        .content-section {
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #343a40; 
+        }
+
+        a.btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff; 
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease; 
+        }
+
+        a.btn:hover {
+            background-color: #212a88; /* Darker green color on hover */
+        }
+    </style>
+    <nav>
+        <a>IMSE Webshop Application</a>
+    </nav>
+    <div class="content-section">
+        <h2><i class="fas fa-database"></i> MySQL Database Initialization:</h2>
+        <p>
+            Before interacting with the application, the MySQL database needs to be filled with data.
+        </p>
+        <p>
+            This is needed to enable every function of this web application, such as the <b>Login</b> function.
+        </p>
+        <p>
+            The button below starts the filling process of the MySQL database.
+        </p>
+        <p>            
+            First, all existing data (if any) is deleted, then the database is filled with mostly randomized data.
+        </p>
+        <a href="{{ url_for('reset_db') }}" role="button" class="btn btn-primary btn-lg mt-2">Import Data</a>
+    </div>
+{% endblock content %}

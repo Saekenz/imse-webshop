@@ -1,0 +1,33 @@
+{% if sidebar is defined %}
+<div class="col-md-4">
+    <div class="content-section">
+        <h4>{{ sidebar.get('title') }}</h4>
+        <small  class='text-muted'>{{ sidebar.get('description')|safe }}</small>
+            {% if sidebar.get('data') %}
+                <hr class="solid">
+                {% if sidebar.get('data')|length > 5 %}
+                    {% for k,v in sidebar.get('data').items() %}
+                        <sup><span class="badge badge-light">{{ ' '.join([v, k]) }}</span></sup>
+                    {% endfor %}
+                {% else %}
+                    <ul class="list-group">
+                    {% for k,v in sidebar.get('data').items() %}
+                        <li class="list-group-item list-group-item-light">
+                            {{ k }}
+                            <sup><span class="badge badge-{{ 'success' if v else 'danger' }}">{{ v }}</span></sup>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+            {% if sidebar.get('button') %}
+                <hr class="solid">
+                <form method="POST" action="{{ url_for(sidebar.get('button')) }}">
+                    <button type="submit" class="btn btn-primary btn-sm" {{ 'disabled' if session['db_status'] != 'MySQL'}}>
+                        {{ sidebar.get('button').title() }}
+                    </button>
+                </form>
+            {% endif %}
+    </div>
+</div>
+{% endif %}

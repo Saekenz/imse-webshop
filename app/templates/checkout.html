@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head class="checkout-header">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
+    <title>Webshop Checkout</title>
+</head>
+<body class="checkout-body">
+    {% if session['logged_in'] %}
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{{ url_for('home') }}">
+                    Webshop App<sup><span class="badge badge-{{ 'primary' if session['db_status'] == 'MySQL' else 'success' }}">{{ session['db_status'] }}</span></sup>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-item nav-link" href="{{ url_for('shopping_basket') }}">Shopping-Basket</a></li>
+                        <li class="nav-item"><a class="nav-item nav-link" href="{{ url_for('report', report_type='invoices') }}">Unpaid Invoices</a></li>
+                    </ul>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="{{ url_for('profile') }}">Profile</a>
+                        <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+        {% endif %}
+    <h2  class="checkout-h2" style="display: flex; justify-content: flex-start;">{{ title }}</h2>
+    <div style="display: flex; justify-content: flex-start;  overflow: hidden;">
+        <div class="customer-info" style="margin-left: 10px;">
+            <h3 style="font-weight: bold;">Customer Information</h3>
+            <p><i class="fas fa-user-circle"></i>  {{ session['first_name'].title() + ' ' + session['last_name'].title()}}</p>
+            <p><i class="fas fa-envelope"></i> {{ session['email'] }}</p>
+        </div>
+        <div class="checkout-section" style="overflow: hidden; margin-left: 20px;">
+            <div class="checkout-total">
+                <span> Order Total: {{ df['total'].sum()|round(2) }}&euro;</span>
+            </div>
+            <div class="checkout-buttons">
+                <form action="/buy" method="post">
+                    <button class="checkout-button buy-button" type="submit">Buy now</button>            
+                </form>
+                <form action="/home" method="get">
+                    <button class="checkout-button cancel-button" type="submit">Return to home</button>            
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <div style="display: flex; justify-content: flex-start; margin-left: 10px; overflow: hidden;">
+        <table class="checkout-table" style="float:left">
+            <thead>
+                <tr class="checkout-tr">
+                    {% for col in df.columns %}
+                        {% if col != 'total' and col != 'product_id' %}
+                            <th class="checkout-th">{{ col }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for _,row in df.iterrows() %}
+                <tr class="checkout-tr">
+                    {% for col in df.columns %}
+                        {% if col == 'price' %}
+                            <td class="checkout-td">{{ row[col] }}&euro;</td>
+                        {% elif col != 'total' and col != 'product_id' %}
+                            <td class="checkout-td">{{ row[col] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+       
+    </div>
+</body>
+</html>

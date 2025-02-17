@@ -1,0 +1,84 @@
+{% extends "_layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <h2><i class="fas fa-user-circle"></i> {{ session['first_name'].title() + ' ' + session['last_name'].title()}}</h2>
+        <h2><i class="fas fa-envelope"></i> {{ session['email'] }}</h2>
+    </div>
+    <div class="content-section">
+        <h2>{{ report_type.title() }} Report:</h2>
+        <table class="table table-hover table-sm border">
+          <thead class="thead-light">
+            <tr class="header">
+                {% for column in df.columns %}
+                    {% if not column.startswith('_') and column != 'user_id' %}
+                        <th scope="col" style="text-align:center">{{ column.replace('_pct', '').replace('_ccy', '').replace('_', ' ') }}</th>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+          {% for _, row in df.iterrows() %}
+              <tr>
+                  {% for column in df.columns %}
+                      {% if '_image' in column or column == 'user_id'%}
+                         <!-- will be added to name column instead -->
+                      {% elif column == 'name' %}
+                          <td style="text-align:center; vertical-align: middle;">
+                              <img class="rounded-circle article-img" src="{{ row['_image_path'] }}" title="{{ row['name'].title() }}">
+                          </td>
+                      {% elif column.endswith('pct') %}
+                          <td style="text-align:center; vertical-align: middle;">{{ row[column] }}%</td>
+                      {% elif column.endswith('ccy') %}
+                          <td style="text-align:center; vertical-align: middle;">{{ '%0.2f' % row[column] }}&euro;</td>
+                      {% else%}
+                          <td style="text-align:center; vertical-align: middle;">{{ row[column] }}</td>
+                      {% endif%}
+                  {% endfor %}
+              </tr>
+          {% endfor %}
+          </tbody>
+          <tfoot><tr style="font-size: 10px;"><td colspan="5">{{ df|length }} users with unpaid {{ report_type }} found.</td></tr></tfoot>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">{{ report_type.title() }} filter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('report', report_type=report_type) }}">
+                        <div class="form-group form-inline">
+                            <div class="input-group">
+                                <label for="date1">Filter from</label> &nbsp;
+                                <input class="form-control" type="date" id="date1" name="filter_from" value="{{ filter_from }}"> &nbsp;
+                                <label for="date2"> until</label> &nbsp;
+                                <input class="form-control" type="date" id="date2" name="filter_to" value="{{ filter_to }}">
+                            </div>
+                        </div>
+                        <div class="form-group form-inline mt-2">
+                            <label for="sort">Sort by</label>
+                            <select class="form-control ml-2" id="sort" name="sort_by">
+                            {% for column in df.columns %}
+                                {% if not column.startswith('_') %}
+                                    <option {{'selected' if column == sort_by else ''}} value="{{ column }}">
+                                        {{ column.replace('_pct', '').replace('_ccy', '').replace('_', ' ').replace('name', report_type[:-1]).capitalize() }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success btn-sm">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

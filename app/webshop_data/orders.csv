@@ -1,0 +1,41 @@
+﻿date_placed,order_status,user_id
+2023-01-08,new,2
+2023-03-17,arrived,4
+2023-05-22,shipping,1
+2023-07-03,cancelled,3
+2023-09-11,preparing for shipment,5
+2023-02-14,arrived,2
+2023-04-28,new,1
+2023-06-05,preparing for shipment,3
+2023-08-19,cancelled,4
+2023-10-27,shipping,5
+2023-02-03,preparing for shipment,1
+2023-04-11,cancelled,4
+2023-06-26,arrived,2
+2023-08-08,new,3
+2023-10-15,shipping,5
+2023-02-22,arrived,1
+2023-05-07,cancelled,2
+2023-07-14,preparing for shipment,4
+2023-09-01,new,5
+2023-11-23,shipping,3
+2023-12-01,new,1
+2023-12-15,arrived,2
+2023-12-28,shipping,3
+2023-01-05,cancelled,4
+2023-01-10,preparing for shipment,5
+2023-01-18,new,4
+2023-01-23,arrived,2
+2023-01-31,shipping,2
+2023-02-07,cancelled,1
+2023-02-15,preparing for shipment,3
+2023-02-22,new,1
+2023-02-21,arrived,4
+2023-03-07,shipping,2
+2023-03-15,cancelled,5
+2023-03-22,preparing for shipment,1
+2023-03-29,new,4
+2023-04-05,arrived,3
+2023-04-12,shipping,2
+2023-04-19,cancelled,1
+2023-04-26,preparing for shipment,3

@@ -1,0 +1,33 @@
+{% extends "_layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ image_file }}">
+            <div class="media-body">
+                <h2 class="account-heading">Welcome {{ session['first_name'].title() + ' ' + session['last_name'].title()}}!</h2>
+                <p class="text-secondary">{{ session['email'] }}</p>
+            </div>
+        </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Information</legend>
+                <div class="form-group">
+                    {{ form.first_name.label(class="form-control-label") }}
+                    {{ form.first_name(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.last_name.label(class="form-control-label") }}
+                    {{ form.last_name(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.date_registered.label(class="form-control-label") }}
+                    {{ form.date_registered(class="form-control form-control-lg") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-primary") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
